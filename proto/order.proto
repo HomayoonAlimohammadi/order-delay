@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package order;
+option go_package = "github.com/HomayoonAlimohammadi/order-delay/proto/order";
+
+import "google/protobuf/empty.proto";
+
+service OrderDelay {
+    rpc ReportOrderDelay(ReportOrderDelayRequest) returns (ReportOrderDelayResponse);
+    rpc AssignDelayReportToAgent(AssignDelayReportToAgentRequest) returns (google.protobuf.Empty);
+    rpc GetVendorsDelays(GetVendorsDelaysRequest) returns (GetVendorsDelaysResponse);
+}
+
+message ReportOrderDelayRequest {
+    string order_id = 1;
+}
+
+message ReportOrderDelayResponse {
+    string report_id = 1;
+}
+
+message AssignDelayReportToAgentRequest {
+    string report_id = 1;
+}
+
+message GetVendorsDelaysRequest {
+    repeated string vendor_ids = 1;
+}
+
+message VendorDelaysReport {
+    string vendor_id = 1;
+    repeated DelayReport delay_reports = 2;
+}
+
+message DelayReport {
+    string id = 1;
+    string order_id = 2;
+}
+
+message GetVendorsDelaysResponse {
+    repeated VendorDelaysReport delay_reports = 1;
+}
