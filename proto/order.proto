@@ -4,39 +4,50 @@ package order;
 option go_package = "github.com/HomayoonAlimohammadi/order-delay/proto/order";
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 service OrderDelay {
     rpc ReportOrderDelay(ReportOrderDelayRequest) returns (ReportOrderDelayResponse);
     rpc AssignDelayReportToAgent(AssignDelayReportToAgentRequest) returns (google.protobuf.Empty);
-    rpc GetVendorsDelays(GetVendorsDelaysRequest) returns (GetVendorsDelaysResponse);
+    rpc GetVendorDelays(GetVendorDelaysRequest) returns (GetVendorDelaysResponse);
 }
 
 message ReportOrderDelayRequest {
-    string order_id = 1;
+    int64 order_id = 1;
 }
 
 message ReportOrderDelayResponse {
-    string report_id = 1;
+    enum Status {
+        UNKNOWN = 0;
+        REPORTED = 1;
+    }
+    oneof result {
+        int32 new_delivery_time_minutes = 1;
+        Status status  = 2; 
+    }
 }
 
 message AssignDelayReportToAgentRequest {
-    string report_id = 1;
+    int64 report_id = 1;
+    int32 agent_id = 2;
 }
 
-message GetVendorsDelaysRequest {
-    repeated string vendor_ids = 1;
-}
-
-message VendorDelaysReport {
-    string vendor_id = 1;
-    repeated DelayReport delay_reports = 2;
+message GetVendorDelaysRequest {
+    int32 vendor_id = 1;
 }
 
 message DelayReport {
-    string id = 1;
-    string order_id = 2;
+    int64 id = 1;
+    int64 order_id = 2;
 }
 
-message GetVendorsDelaysResponse {
-    repeated VendorDelaysReport delay_reports = 1;
+message GetVendorDelaysResponse {
+    repeated DelayReport delay_reports = 1;
+}
+
+message Order {
+    int64 id = 1;
+    int32 vendor_id = 2;
+    int32 delivery_time_minutes = 3;
+    google.protobuf.Timestamp created_at = 4; 
 }

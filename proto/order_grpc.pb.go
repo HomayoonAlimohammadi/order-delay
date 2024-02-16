@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	OrderDelay_ReportOrderDelay_FullMethodName         = "/order.OrderDelay/ReportOrderDelay"
 	OrderDelay_AssignDelayReportToAgent_FullMethodName = "/order.OrderDelay/AssignDelayReportToAgent"
-	OrderDelay_GetVendorsDelays_FullMethodName         = "/order.OrderDelay/GetVendorsDelays"
+	OrderDelay_GetVendorDelays_FullMethodName          = "/order.OrderDelay/GetVendorDelays"
 )
 
 // OrderDelayClient is the client API for OrderDelay service.
@@ -31,7 +31,7 @@ const (
 type OrderDelayClient interface {
 	ReportOrderDelay(ctx context.Context, in *ReportOrderDelayRequest, opts ...grpc.CallOption) (*ReportOrderDelayResponse, error)
 	AssignDelayReportToAgent(ctx context.Context, in *AssignDelayReportToAgentRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetVendorsDelays(ctx context.Context, in *GetVendorsDelaysRequest, opts ...grpc.CallOption) (*GetVendorsDelaysResponse, error)
+	GetVendorDelays(ctx context.Context, in *GetVendorDelaysRequest, opts ...grpc.CallOption) (*GetVendorDelaysResponse, error)
 }
 
 type orderDelayClient struct {
@@ -60,9 +60,9 @@ func (c *orderDelayClient) AssignDelayReportToAgent(ctx context.Context, in *Ass
 	return out, nil
 }
 
-func (c *orderDelayClient) GetVendorsDelays(ctx context.Context, in *GetVendorsDelaysRequest, opts ...grpc.CallOption) (*GetVendorsDelaysResponse, error) {
-	out := new(GetVendorsDelaysResponse)
-	err := c.cc.Invoke(ctx, OrderDelay_GetVendorsDelays_FullMethodName, in, out, opts...)
+func (c *orderDelayClient) GetVendorDelays(ctx context.Context, in *GetVendorDelaysRequest, opts ...grpc.CallOption) (*GetVendorDelaysResponse, error) {
+	out := new(GetVendorDelaysResponse)
+	err := c.cc.Invoke(ctx, OrderDelay_GetVendorDelays_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (c *orderDelayClient) GetVendorsDelays(ctx context.Context, in *GetVendorsD
 type OrderDelayServer interface {
 	ReportOrderDelay(context.Context, *ReportOrderDelayRequest) (*ReportOrderDelayResponse, error)
 	AssignDelayReportToAgent(context.Context, *AssignDelayReportToAgentRequest) (*emptypb.Empty, error)
-	GetVendorsDelays(context.Context, *GetVendorsDelaysRequest) (*GetVendorsDelaysResponse, error)
+	GetVendorDelays(context.Context, *GetVendorDelaysRequest) (*GetVendorDelaysResponse, error)
 	mustEmbedUnimplementedOrderDelayServer()
 }
 
@@ -89,8 +89,8 @@ func (UnimplementedOrderDelayServer) ReportOrderDelay(context.Context, *ReportOr
 func (UnimplementedOrderDelayServer) AssignDelayReportToAgent(context.Context, *AssignDelayReportToAgentRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AssignDelayReportToAgent not implemented")
 }
-func (UnimplementedOrderDelayServer) GetVendorsDelays(context.Context, *GetVendorsDelaysRequest) (*GetVendorsDelaysResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetVendorsDelays not implemented")
+func (UnimplementedOrderDelayServer) GetVendorDelays(context.Context, *GetVendorDelaysRequest) (*GetVendorDelaysResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVendorDelays not implemented")
 }
 func (UnimplementedOrderDelayServer) mustEmbedUnimplementedOrderDelayServer() {}
 
@@ -141,20 +141,20 @@ func _OrderDelay_AssignDelayReportToAgent_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderDelay_GetVendorsDelays_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetVendorsDelaysRequest)
+func _OrderDelay_GetVendorDelays_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVendorDelaysRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderDelayServer).GetVendorsDelays(ctx, in)
+		return srv.(OrderDelayServer).GetVendorDelays(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrderDelay_GetVendorsDelays_FullMethodName,
+		FullMethod: OrderDelay_GetVendorDelays_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderDelayServer).GetVendorsDelays(ctx, req.(*GetVendorsDelaysRequest))
+		return srv.(OrderDelayServer).GetVendorDelays(ctx, req.(*GetVendorDelaysRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -175,8 +175,8 @@ var OrderDelay_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrderDelay_AssignDelayReportToAgent_Handler,
 		},
 		{
-			MethodName: "GetVendorsDelays",
-			Handler:    _OrderDelay_GetVendorsDelays_Handler,
+			MethodName: "GetVendorDelays",
+			Handler:    _OrderDelay_GetVendorDelays_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

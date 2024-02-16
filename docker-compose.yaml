@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app: 
+    build: . 
+    image: orderdelays:latest
+    container_name: orderdelays
+    ports:
+      - "8888:8888"
+    depends_on:
+      - postgres 
+    environment:
+      # don't forget to change the Makefile accordingly
+      - POSTGRES_URL=postgres://user:pass@postgres:5432/order_delay?sslmode=disable
+    restart: on-failure
+    networks:
+      - orderdelays_network
+
+  postgres:
+    image: postgres:14
+    environment:
+      # don't forget to change the Makefile accordingly
+      POSTGRES_DB: order_delay
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - orderdelays_network
+
+networks:
+  orderdelays_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
